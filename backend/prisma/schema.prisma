@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String      @id @default(uuid())
+  email      String      @unique
+  name       String?
+  role       Role        @default(REFILLER)
+  createdAt  DateTime    @default(now())
+  refillLogs RefillLog[]
+}
+
+model CapacityTemplate {
+  id              String        @id @default(uuid())
+  templateName    String        @unique
+  defaultCapacity Int
+  createdAt       DateTime      @default(now())
+  slots           MachineSlot[]
+}
+
+model Sku {
+  id        String        @id @default(uuid())
+  name      String        @unique
+  brand     String?
+  category  String?
+  createdAt DateTime      @default(now())
+  slots     MachineSlot[]
+}
+
+model Machine {
+  id        String         @id @default(uuid())
+  code      String         @unique
+  location  String?
+  createdAt DateTime       @default(now())
+  stocks    CurrentStock[]
+  slots     MachineSlot[]
+  trays     MachineTray[]
+  refills   RefillLog[]
+  sales     SalesLog[]
+}
+
+model MachineTray {
+  id        String        @id @default(uuid())
+  machineId String
+  name      String
+  sortOrder Int
+  slots     MachineSlot[]
+  machine   Machine       @relation(fields: [machineId], references: [id], onDelete: Cascade)
+
+  @@unique([machineId, name])
+}
+
+model MachineSlot {
+  id                 String            @id @default(uuid())
+  machineId          String
+  trayId             String?
+  slotNumber         String
+  skuId              String
+  capacityTemplateId String?
+  maxCapacity        Int
+  createdAt          DateTime          @default(now())
+  currentStocks      CurrentStock[]
+  capacityTemplate   CapacityTemplate? @relation(fields: [capacityTemplateId], references: [id])
+  machine            Machine           @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  sku                Sku               @relation(fields: [skuId], references: [id])
+  tray               MachineTray?      @relation(fields: [trayId], references: [id])
+  refillLogs         RefillLog[]
+  salesLogs          SalesLog[]
+
+  @@unique([machineId, slotNumber])
+  @@index([machineId, trayId])
+  @@index([skuId])
+}
+
+model CurrentStock {
+  id         String      @id @default(uuid())
+  machineId  String
+  slotId     String
+  currentQty Int         @default(0)
+  updatedAt  DateTime    @updatedAt
+  machine    Machine     @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  slot       MachineSlot @relation(fields: [slotId], references: [id], onDelete: Cascade)
+
+  @@unique([machineId, slotId])
+  @@index([slotId])
+}
+
+model RefillLog {
+  id            String      @id @default(uuid())
+  machineId     String
+  slotId        String
+  quantityAdded Int
+  refilledAt    DateTime    @default(now())
+  refillerId    String?
+  machine       Machine     @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  refiller      User?       @relation(fields: [refillerId], references: [id])
+  slot          MachineSlot @relation(fields: [slotId], references: [id], onDelete: Cascade)
+
+  @@index([machineId, slotId, refilledAt])
+}
+
+model SalesLog {
+  id        String      @id @default(uuid())
+  machineId String
+  slotId    String
+  soldAt    DateTime    @default(now())
+  rawTxnId  String?
+  machine   Machine     @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  slot      MachineSlot @relation(fields: [slotId], references: [id], onDelete: Cascade)
+
+  @@index([machineId, slotId, soldAt])
+}
+
+enum Role {
+  ADMIN
+  REFILLER
+}
