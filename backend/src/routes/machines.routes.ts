@@ -1,12 +1,9 @@
 import { Router } from "express";
-import * as controller from "../controllers/machines.controller";
+import * as ctrl from "../controllers/machines.controller";
 
 const router = Router();
 
-// create machine
-router.post("/", controller.createMachine);
-
-// list machines
-router.get("/", controller.getMachines);
+// GET /api/machines
+router.get("/", ctrl.listMachines);
 
 export default router;

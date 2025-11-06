@@ -10,10 +10,10 @@ import refillRouter from "./routes/refill.routes";
 import salesRouter from "./routes/sales.routes";
 import stockRouter from "./routes/stock.routes";
 import traysRouter from "./routes/trays.routes";
+import masterRouter from "./routes/master.routes";
 
 import notFound from "./middleware/not-found";
 import errorHandler from "./middleware/error-handler";
-import masterRouter from "./routes/master.routes";
 
 dotenv.config();
 
@@ -22,7 +22,14 @@ console.log("app.ts loaded");
 const app = express();
 app.set("trust proxy", 1);
 
-app.use(cors({ origin: true }));
+// Allow frontend origin via env FRONTEND_ORIGIN (fallback to true)
+const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN ?? process.env.BASE_URL ?? true;
+app.use(
+  cors({
+    origin: FRONTEND_ORIGIN,
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -30,7 +37,6 @@ app.use(
     createParentPath: true,
   })
 );
-
 
 app.get("/", (_req, res) =>
   res.send(
@@ -47,16 +53,15 @@ app.get("/health", (_req, res) => res.json({ status: "ok" }));
 // API routes
 // Mount routers under /api
 app.use("/api/machines", machinesRouter);
+// note: stock routes are registered as /api/machines/:machineId/stocks via stock.routes
+app.use("/api", stockRouter);
 app.use("/api", traysRouter);
 app.use("/api", slotsRouter);
 app.use("/api/skus", skusRouter);
 app.use("/api", refillRouter);
-app.use("/api/sales", salesRouter);
-app.use("/api", stockRouter);
-app.use("/api", masterRouter);
+app.use("/api", salesRouter);
 
-
-
+// Fallback and error handlers
 app.use(notFound);
 app.use(errorHandler);
 

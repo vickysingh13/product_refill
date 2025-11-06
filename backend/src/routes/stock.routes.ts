@@ -1,8 +1,9 @@
 import { Router } from "express";
-import * as controller from "../controllers/stock.controller";
+import * as ctrl from "../controllers/stock.controller";
+
 const router = Router();
 
-router.get("/", controller.getStock);
-router.get("/:id", controller.getById);
+// GET /api/machines/:machineId/stocks
+router.get("/machines/:machineId/stocks", ctrl.getMachineStocks);
 
 export default router;

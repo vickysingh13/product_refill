@@ -15,12 +15,12 @@ export async function createMachine(req: Request, res: Response) {
   }
 }
 
-export async function getMachines(_req: Request, res: Response) {
+export async function listMachines(_req: Request, res: Response) {
   try {
-    const machines = await service.getMachines();
+    const machines = await service.listMachines();
     return res.json(machines);
   } catch (err) {
-    console.error("getMachines error:", err);
-    return res.status(500).json({ error: "Failed to fetch machines" });
+    console.error("listMachines error:", err);
+    return res.status(500).json({ error: "Failed to list machines" });
   }
 }
