@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SnackMaster - New Vending Solutions</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- DB unavailable banner -->
+  <div id="db-banner" class="db-banner" style="display:none;">
+    Database unavailable — some features are disabled
+  </div>
+
+  <div class="notification" id="notification">
+    <span id="notification-text"></span>
+  </div>
+
+  <div class="container">
+    <!-- Home Screen -->
+    <div id="home-screen" class="screen active">
+      <div class="brand">
+        <h1>SNACKMASTER</h1>
+        <p>NEW VENDING SOLUTIONS</p>
+      </div>
+      <div class="header">
+        <h2>Home Page</h2>
+        <p>Welcome to SnackMaster Vending System</p>
+      </div>
+      <button class="btn" data-nav="login-screen">Get Started <i class="fas fa-arrow-right"></i></button>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="screen">
+      <div class="brand"><h1>SNACKMASTER</h1><p>NEW VENDING SOLUTIONS</p></div>
+      <div class="header"><h2>Login</h2><p>Enter your credentials to continue</p></div>
+      <div class="form-group">
+        <label for="userId">Enter User ID</label>
+        <input type="text" id="userId" placeholder="Enter your user ID" />
+        <div class="error-message" id="userId-error">User ID is required</div>
+      </div>
+      <div class="form-group">
+        <label for="password">Enter Password</label>
+        <input type="password" id="password" placeholder="Enter your password" />
+        <div class="error-message" id="password-error">Password is required</div>
+      </div>
+      <button class="btn" id="login-btn">Login</button>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" data-nav="home-screen">Back to Home</button>
+      </div>
+    </div>
+
+    <!-- Machine Selection Screen -->
+    <div id="machine-selection-screen" class="screen">
+      <div class="header"><h2>Choose Machine</h2><p>Select a machine to refill</p></div>
+      <div class="machine-container" id="machine-list">
+        <!-- machines will be rendered here -->
+      </div>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" data-nav="login-screen">Back</button>
+      </div>
+    </div>
+
+    <!-- Data Management Screen -->
+    <div id="data-management-screen" class="screen">
+      <div class="header"><h2>Data Management</h2><p>Upload data files for refill process</p></div>
+      <div class="csv-section">
+        <div class="csv-upload">
+          <h3>Upload Master Data</h3>
+          <input type="file" id="master-csv" class="file-input" accept=".csv" />
+          <label for="master-csv" class="file-label">Choose CSV File</label>
+          <button class="btn" id="master-upload-btn">Upload CSV</button>
+        </div>
+        <div class="csv-upload">
+          <h3>Upload Sale Data</h3>
+          <input type="file" id="sale-csv" class="file-input" accept=".csv" />
+          <label for="sale-csv" class="file-label">Choose CSV File</label>
+          <button class="btn" id="sale-upload-btn">Upload CSV</button>
+        </div>
+      </div>
+
+      <div class="current-stack">
+        <h3>Current Stock</h3>
+        <div class="stack-items" id="current-stack-list"></div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" data-nav="machine-selection-screen">Back</button>
+        <button class="btn" data-nav="refill-screen" id="refill-btn" disabled>Take Refill Product</button>
+      </div>
+    </div>
+
+    <!-- Refill Screen -->
+    <div id="refill-screen" class="screen">
+      <div class="header"><h2>Machine Refilled</h2><p>Refill process completed successfully</p></div>
+      <div class="refill-summary">
+        <h3>Refill Summary</h3>
+        <p>Data has been stored in the database for next day sales.</p>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" data-nav="data-management-screen">Back</button>
+        <button class="btn btn-success" data-nav="machine-selection-screen">Repeat Process</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="./src/api.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

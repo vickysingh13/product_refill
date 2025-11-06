@@ -1,0 +1,24 @@
+{
+  "name": "vending-frontend",
+  "version": "1.0.0",
+  "description": "A static frontend for the vending machine management system.",
+  "main": "src/js/app.js",
+  "scripts": {
+    "start": "live-server public",
+    "build": "echo 'Build step not defined'",
+    "test": "echo 'No tests defined'"
+  },
+  "keywords": [
+    "vending",
+    "frontend",
+    "static"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.1"
+  }
+}

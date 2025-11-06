@@ -1,0 +1,29 @@
+:root{--primary:#3498db;--accent:#2c3e50;--muted:#7f8c8d}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Segoe UI,Roboto,Arial,sans-serif}
+body{background:linear-gradient(135deg,#1a2a6c,#b21f1f,#fdbb2d);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.container{width:100%;max-width:980px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 15px 30px rgba(0,0,0,.2);padding:24px}
+.screen{display:none}
+.screen.active{display:block}
+.brand{text-align:center;margin-bottom:12px}
+.brand h1{font-size:28px;color:var(--accent);letter-spacing:1px}
+.header{margin-bottom:16px}
+.header h2{font-size:20px;color:var(--accent);margin-bottom:6px}
+.btn{background:linear-gradient(to right,var(--primary),var(--accent));color:#fff;border:none;padding:12px 16px;border-radius:8px;cursor:pointer;font-weight:600}
+.btn-secondary{background:#95a5a6;color:#fff}
+.btn-success{background:linear-gradient(to right,#2ecc71,#27ae60)}
+.btn-error{background:linear-gradient(to right,#e74c3c,#c0392b)}
+.form-group{margin-bottom:12px}
+input[type="text"],input[type="password"]{width:100%;padding:10px;border-radius:8px;border:1px solid #e0e0e0}
+.error-message{color:#e74c3c;font-size:13px;margin-top:6px;display:none}
+.machine-container{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:12px 0}
+.machine{background:linear-gradient(to bottom right,var(--primary),var(--accent));color:#fff;padding:14px;border-radius:10px;text-align:center;cursor:pointer}
+.csv-section{display:flex;gap:12px}
+.csv-upload{flex:1;padding:12px;background:#f8f9fa;border-radius:8px;text-align:center;border:1px dashed #ddd}
+.file-input{display:none}
+.file-label{display:inline-block;padding:8px 12px;background:var(--primary);color:#fff;border-radius:6px;cursor:pointer;margin-top:8px}
+.current-stack{margin-top:16px;padding:12px;background:#f8f9fa;border-radius:8px}
+.stack-items{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.stack-item{background:#fff;padding:8px;border-radius:6px;border:1px solid #e0e0e0;text-align:center}
+.notification{position:fixed;top:18px;right:18px;padding:10px 14px;border-radius:8px;background:#2ecc71;color:#fff;transform:translateX(150%);transition:transform .25s}
+.notification.show{transform:translateX(0)}
+.db-banner{position:fixed;top:0;left:0;right:0;background:linear-gradient(to right,#e74c3c,#c0392b);color:#fff;padding:8px 12px;text-align:center;font-weight:700;z-index:1100;box-shadow:0 2px 6px rgba(0,0,0,.15)}
