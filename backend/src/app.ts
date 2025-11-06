@@ -22,19 +22,29 @@ console.log("app.ts loaded");
 const app = express();
 app.set("trust proxy", 1);
 
-// Allow frontend origin via env FRONTEND_ORIGIN (fallback to true)
-const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN ?? process.env.BASE_URL ?? true;
+// build allow-list from env FRONTEND_ORIGIN (comma separated) or fallbacks
+const rawOrigins = process.env.FRONTEND_ORIGIN ?? "http://localhost:5173,http://localhost:3000";
+const ALLOWED_ORIGINS = rawOrigins.split(",").map(s => s.trim()).filter(Boolean);
+
 app.use(
   cors({
-    origin: FRONTEND_ORIGIN,
-    credentials: true,
+    origin: (origin, callback) => {
+      // allow non-browser tools (Postman, curl) with no origin
+      if (!origin) return callback(null, true);
+      if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+      return callback(new Error("CORS origin denied"));
+    },
+    credentials: false,
   })
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// larger file size limit for CSV uploads (10MB)
 app.use(
   fileUpload({
     createParentPath: true,
+    limits: { fileSize: 10 * 1024 * 1024 },
   })
 );
 
