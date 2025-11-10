@@ -1,5 +1,4 @@
-import { API_BASE } from "./config.js";
-
+const BASE_URL = "https://cautious-space-fishstick-jrgvrqgv963546p-4000.app.github.dev";
 const DEFAULT_MACHINE_ID = "11ce502b-b1aa-4e36-87b3-9a42e91f044b";
 
 async function fetchJson(url, opts = {}) {
@@ -12,17 +11,17 @@ async function fetchJson(url, opts = {}) {
 }
 
 export async function healthCheck() {
-  return fetchJson(`${API_BASE.replace(/\/$/, "")}/health`);
+  return fetchJson(`${BASE_URL}/health`);
 }
 
 export async function getMachines() {
-  return fetchJson(`${API_BASE.replace(/\/$/, "")}/machines`);
+  return fetchJson(`${BASE_URL}/api/machines`);
 }
 
 export async function uploadMasterSlots(machineId = DEFAULT_MACHINE_ID, file) {
   const form = new FormData();
   form.append("file", file);
-  const res = await fetch(`${API_BASE.replace(/\/$/, "")}/machines/${machineId}/slots/master-upload`, {
+  const res = await fetch(`${BASE_URL}/api/machines/${machineId}/slots/master-upload`, {
     method: "POST",
     body: form,
   });
@@ -33,7 +32,7 @@ export async function uploadMasterSlots(machineId = DEFAULT_MACHINE_ID, file) {
 export async function uploadSales(machineId = DEFAULT_MACHINE_ID, file) {
   const form = new FormData();
   form.append("file", file);
-  const res = await fetch(`${API_BASE.replace(/\/$/, "")}/sales/machines/${machineId}/sales/upload`, {
+  const res = await fetch(`${BASE_URL}/api/machines/${machineId}/sales/upload`, {
     method: "POST",
     body: form,
   });
@@ -42,11 +41,11 @@ export async function uploadSales(machineId = DEFAULT_MACHINE_ID, file) {
 }
 
 export async function getSlots(machineId = DEFAULT_MACHINE_ID) {
-  return fetchJson(`${API_BASE.replace(/\/$/, "")}/machines/${machineId}/slots`);
+  return fetchJson(`${BASE_URL}/api/machines/${machineId}/slots`);
 }
 
 export async function getCurrentStock(machineId = DEFAULT_MACHINE_ID) {
-  return fetchJson(`${API_BASE.replace(/\/$/, "")}/machines/${machineId}/stocks`);
+  return fetchJson(`${BASE_URL}/api/machines/${machineId}/stocks`);
 }
 
 export default {

@@ -37,6 +37,7 @@ app.use(
     credentials: false,
   })
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
